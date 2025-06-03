@@ -23,5 +23,5 @@ npm run dev
 
 ```
 # Start the express server
-node server/server.js
+node server.js
 ```
