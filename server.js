@@ -1,7 +1,12 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +25,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(express.static(path.join(__dirname, "dist")));
 
 app.get("/api/sensors", async (req, res) => {
   try {
@@ -66,6 +73,10 @@ app.get("/api/resource/:resourceUri", async (req, res) => {
   }
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
 app.listen(PORT, () => {
-  console.log(`Express server running at http://localhost:${PORT}/`);
+  console.log(`Express server running at ${process.env.VITE_BACKEND_URL}/`);
 });
