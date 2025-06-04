@@ -50,10 +50,15 @@ app.get("/api/sensors", async (req, res) => {
   }
 });
 
-app.get("/api/resource/:resourceUri", async (req, res) => {
+app.get("/api/resource", async (req, res) => {
   try {
-    const { resourceUri } = req.params;
-    const response = await fetch(`${DJX_BASE_URL}/m2m/data?res=${resourceUri}`, {
+    const { uri } = req.query;
+
+    if (!uri) {
+      return res.status(400).json({ error: "Resource URI is required" });
+    }
+
+    const response = await fetch(`${DJX_BASE_URL}/m2m/data?res=${uri}`, {
       method: "GET",
       headers: {
         Authorization: `Basic ${Buffer.from(`${USERNAME}:${PASSWORD}`).toString("base64")}`,

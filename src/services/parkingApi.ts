@@ -19,7 +19,7 @@ export const parkingApi = {
   async getResourceData(resourceUri: string) {
     try {
       const encodedUri = encodeURIComponent(resourceUri);
-      const response = await fetch(`${API_BASE_URL}/resource/${encodedUri}`);
+      const response = await fetch(`${API_BASE_URL}/resource?uri=${encodedUri}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
