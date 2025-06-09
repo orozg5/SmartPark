@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody, Button } from "@heroui/react";
 import { RefreshCw } from "lucide-react";
-import { ParkingSpace } from "../components/ParkingSpace";
 import { StatisticsCards } from "../components/StatisticsCards";
+import { ParkingSpace } from "../components/ParkingSpace";
+import { Header } from "../components/Header";
 import { parkingApi } from "../services/parkingApi";
 import { IParkingSpace } from "../interfaces/parking";
-import { Header } from "../components/Header";
 
 export const Home = () => {
   const [parkingSpaces, setParkingSpaces] = useState<IParkingSpace[]>([]);
@@ -32,6 +32,7 @@ export const Home = () => {
           const parkingSpace = {
             id: sensor.urn,
             name: sensor.urn,
+            resourceId: sensor.resources.items[0]?.urn || "",
             occupied: resource.contentNodes && resource.contentNodes[0].value === "zauzeto",
             lastUpdated: resource.contentNodes && resource.contentNodes[0].time,
           };
@@ -50,7 +51,6 @@ export const Home = () => {
   useEffect(() => {
     fetchParkingData();
     const interval = setInterval(fetchParkingData, 30000);
-
     return () => clearInterval(interval);
   }, []);
 
