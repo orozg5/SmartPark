@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Card, CardBody, Button } from "@heroui/react";
-import { RefreshCw } from "lucide-react";
+import { Card, CardBody, Button, Chip } from "@heroui/react";
+import { AlertCircle, RefreshCw } from "lucide-react";
 import { StatisticsCards } from "../components/StatisticsCards";
 import { ParkingSpace } from "../components/ParkingSpace";
 import { Header } from "../components/Header";
@@ -81,6 +81,15 @@ export const Home = () => {
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold mb-2">Parking Layout</h3>
               <p className="text-slate-500">Visualization of parking space availability</p>
+              {parkingSpaces.length === parkingSpaces.filter((space) => space.occupied).length &&
+                parkingSpaces.length > 0 && (
+                  <Chip className="mt-4 text-white" style={{ backgroundColor: "red" }}>
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      <p>Parking ramp gate is closed because all spaces are occupied.</p>
+                    </div>
+                  </Chip>
+                )}
             </div>
 
             <div className="flex flex-col items-center space-y-4">
@@ -90,14 +99,16 @@ export const Home = () => {
                 ))}
               </div>
 
-              <div
-                className="bg-gradient-to-b from-gray-400 via-gray-300 to-gray-400 text-white px-8 py-2 rounded-md text-sm font-medium text-center"
-                style={{
-                  width: `${Math.ceil(parkingSpaces.length / 2) * (112 + 16) - 16}px`,
-                }}
-              >
-                Driving Lane
-              </div>
+              {parkingSpaces.length > 0 && (
+                <div
+                  className="bg-gradient-to-b from-gray-400 via-gray-300 to-gray-400 text-white px-8 py-2 rounded-md text-sm font-medium text-center"
+                  style={{
+                    width: `${Math.ceil(parkingSpaces.length / 2) * (112 + 16) - 16}px`,
+                  }}
+                >
+                  Driving Lane
+                </div>
+              )}
 
               <div className="flex gap-4">
                 {parkingSpaces.slice(Math.ceil(parkingSpaces.length / 2)).map((space) => (
