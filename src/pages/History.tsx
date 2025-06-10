@@ -16,10 +16,13 @@ export const History = () => {
     if (!id) return;
     try {
       const resource = await parkingApi.getResourceData(id);
+      const sorted = (resource.contentNodes || []).sort(
+        (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
+      );
       setHistory({
         id,
         history:
-          resource.contentNodes?.map((node) => ({
+          sorted?.map((node) => ({
             time: node.time,
             value: node.value,
           })) || [],

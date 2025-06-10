@@ -29,12 +29,16 @@ export const Home = () => {
             }
           }
 
+          const sorted = [...(resource.contentNodes || [])].sort(
+            (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
+          );
+
           const parkingSpace = {
             id: sensor.urn,
             name: sensor.urn,
             resourceId: sensor.resources.items[0]?.urn || "",
-            occupied: resource.contentNodes && resource.contentNodes[0].value === "zauzeto",
-            lastUpdated: resource.contentNodes && resource.contentNodes[0].time,
+            occupied: sorted[0]?.value === "zauzeto",
+            lastUpdated: sorted[0]?.time,
           };
 
           return parkingSpace;
